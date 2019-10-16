@@ -1,5 +1,6 @@
 ESX										= nil
 local PlayerData						= {}
+local PlayerIsInTain                    = false
 
 Citizen.CreateThread(function()
 	while ESX == nil do
@@ -18,6 +19,29 @@ AddEventHandler('esx:setJob', function(job)
   PlayerData.job = job
 end)
 
+Citizen.CreateThread(function()
+    while true do
+        PlayerPed = GetPlayerPed(-1)
+        if PlayerPed ~= nil and (not IsPlayerIsReady(PlayerPed)) then
+            train = framework.GetClosestTrain(PlayerPed)
+            if train ~= false and train ~= nil and train ~= 0 and GetEntitySpeed(train) == 0.0 then
+                if IsControlJustPressed(1, framework.keys['F']) then
+                    if (not PlayerIsInTain) then
+                        x,y,z = table.unpack(GetOffsetFromEntityInWorldCoords(train, 0.0, 0.0, 0.44))
+                        PlayerIsInTain = true
+                    else
+                        x,y,z = table.unpack(GetOffsetFromEntityInWorldCoords(train, -1.85, -1.85, 0.55))
+                        PlayerIsInTain = false
+                    end
+                    SetEntityCoords(PlayerPed, x, y, z, 0.0, 0.0, 0.0, false)
+                end
+            else
+                Citizen.Wait(850)
+            end
+        end
+        Citizen.Wait(5)
+    end
+end)
 
 Citizen.CreateThread(function()
     while true do
