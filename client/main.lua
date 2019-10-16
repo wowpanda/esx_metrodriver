@@ -167,7 +167,7 @@ function OpenSpawnTrainMenu()
 end
 
 function IsPlayerIsReady(PlayerPed)
-    if PlayerPed ~= nil and PlayerData.job ~= nil and PlayerData.job.name == 'police' then
+    if PlayerPed ~= nil and PlayerData.job ~= nil and PlayerData.job.name == 'lst' then
         return true
     else
         return false    
